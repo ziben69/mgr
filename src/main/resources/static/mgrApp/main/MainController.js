@@ -11,6 +11,14 @@ angular.module('mgrApp').controller('MainController', function($scope, $rootScop
     $scope.sliderL = 1.000;
     $scope.sliderUz = 100;
 
+    var zainicjalizuj = function(){
+
+      $scope.dt = 0.002;
+      $scope.n = 35;
+      $scope.obliczWyrazenie($scope.sliderR, $scope.sliderL, $scope.sliderUz, $scope.n, $scope.dt);
+    }
+
+
     $scope.sliderChange = function(sliderId) { //metoda wywołuje metodę oblicz podczas przesuwania sliderami
         $scope.obliczWyrazenie($scope.sliderR, $scope.sliderL, $scope.sliderUz, $scope.n, $scope.dt);
     };
@@ -71,7 +79,7 @@ angular.module('mgrApp').controller('MainController', function($scope, $rootScop
 
     $scope.rysujWykres = function(daneX, daneY) { //metoda rysująca wykres
         $scope.labels = daneX;
-        $scope.series = ['Series A'];
+        $scope.series = ['X'];
         $scope.data = [daneY];
         $scope.options = {
             scales: {
@@ -81,10 +89,15 @@ angular.module('mgrApp').controller('MainController', function($scope, $rootScop
                     display: true,
                     position: 'left'
                 }, ]
-            }
+            },
+            elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
         };
     }
-
+    zainicjalizuj();
     $scope.pokazWykresy = function(){
            console.log('napis');
           $scope.obliczWyrazenie($scope.sliderR, $scope.sliderL, $scope.sliderUz, $scope.n, $scope.dt);
