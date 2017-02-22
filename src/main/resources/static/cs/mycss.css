@@ -1,0 +1,25 @@
+.thumbnail img {
+    width: 200px;
+    height: 150px;
+}
+
+.thumbnail {
+    width: 280px;
+    height: 510px;
+    position: relative;
+}
+
+.thumbnail h3 {
+    height: 100px;
+}
+
+.product-buttons {
+    position: absolute;
+    bottom: 10px;
+    margin-left: 32px;
+}
+
+h3.ng-binding {
+    height: 50px;
+!important;
+}
