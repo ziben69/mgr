@@ -1,7 +1,15 @@
 /**
  * Created by Marcin on 02.12.2016.
  */
-var phonesApp = angular.module('mgrApp', ['ngRoute', 'ngResource', 'ui.bootstrap', 'rzModule', 'ngStorage', 'angularUtils.directives.dirPagination', 'chart.js']);
+var phonesApp = angular.module('mgrApp', ['ngRoute',
+    'ngResource',
+    'ui.bootstrap',
+    'rzModule',
+    'ngStorage',
+    'angularUtils.directives.dirPagination',
+    'chart.js',
+    '720kb.tooltips'
+]);
 
 
 phonesApp.config(function ($routeProvider) {
@@ -11,6 +19,10 @@ phonesApp.config(function ($routeProvider) {
             templateUrl: 'views/main/main.html',
             controller: 'MainController'
         })
+        // .when('/', {
+        //     templateUrl: 'views/main/main.html',
+        //     controller: 'MainController2'
+        // })
         // .when('/main/detail/:id', {
         //     templateUrl: 'views/main/detail.html',
         //     controller: 'DetailPhoneController'

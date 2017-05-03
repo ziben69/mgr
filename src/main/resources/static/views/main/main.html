@@ -1,43 +1,170 @@
 <div class="col-md-1"></div>
-<div class="col-md-10">
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h1 class="panel-title">Układ RL</h1>
-        </div>
-        <div class="panel-body">
-            <div class="col-md-4">
-                Liczba dt: <input type="number" step="any" class="form-control"
-                                  ng-model="dt" ng-change="pokazWykresy()"/>
-                <br />
-                R:
-                <rzslider rz-slider-model="sliderR"
-                          rz-slider-options="{onChange:sliderChange, id: 1}"></rzslider>
-            </div>
-            <div class="col-md-4">
-                Liczba n: <input type="number" step="any" class="form-control"
-                                 ng-model="n" ng-change="pokazWykresy()"/>
-                <br />
-                L:
-                <rzslider rz-slider-model="sliderL"
-                          rz-slider-options="{onChange:sliderChange, id: 2, floor: 0.000, ceil: 1.000, step: 0.001, precision: 4}"></rzslider>
-            </div>
-            <div class="col-md-4">
+<ul class="nav nav-pills">
 
-            <br /><br /><br /><br />
-                Uz:
-                <rzslider rz-slider-model="sliderUz"
-                          rz-slider-options="{onChange:sliderChange, id: 3}"></rzslider>
-            </div>
-            <div class="col-md-12">
-                <br /><br />
-                <canvas id="line" class="chart chart-line" chart-data="data"
-                        chart-labels="labels" chart-series="series" chart-options="options"
-                        chart-dataset-override="datasetOverride" chart-click="onClick">
-                </canvas>
+    <li><a data-toggle="pill" href="#home1">RL - prąd stały</a></li>
+    <li><a data-toggle="pill" href="#menu11">RL - prąd przemienny</a></li>
 
+    <li><a data-toggle="pill" href="#menu22">RC - prąd stały</a></li>
+    <li><a data-toggle="pill" href="#menu33">RC - prąd przemienny</a></li>
+</ul>
+<br />
+<div class="tab-content">
+    <div id="home1" class="tab-pane fade in active" ng-controller="MainController">
+
+
+<div class="col-md-12">
+
+        <div class="col-md-6">
+
+            <div class="panel panel-danger">
+                <div class="panel-heading">Układ elektroniczny</div>
+                <div class="panel-body">
+
+                    <div class="col-md-12">
+                        <center>
+                            <br />
+                            <div ng-if="obrazek"><img src="image/rl.png" width="430px" height="250px"/>
+                        </center>
+                    </div>
+                    <br/></div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                Symulacja</div>
+                <div class="panel-body">
+                    <ul class="nav nav-pills">
+                        <li ><a data-toggle="pill" href="#home">II PRAWO KIRCHHOFFA</a></li>
+                        <li><a data-toggle="pill" href="#menu1">PRZEBIEG PRĄDU</a></li>
+                        <!--<img src="/image/pyt.png" id="pyt" tooltips tooltip-template="{{tooltipKirch}}"-->
+                        <!--tooltip-side="top" tooltip-class="tooltip"/>-->
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="home" class="tab-pane fade in active">
+                            <br />
+                            <canvas id="line" class="chart chart-line" chart-data="data2" chart-labels="labels2" chart-series="series2" chart-options="options2"
+                                    chart-dataset-override="datasetOverride2" chart-click="onClick">
+                            </canvas></div>
+                        <div id="menu1" class="tab-pane fade">
+                            <br />
+                            <canvas id="line" class="chart chart-line" chart-data="data3" chart-labels="labels3" chart-series="series3" chart-options="options3"
+                                    chart-dataset-override="datasetOverride3" chart-click="onClick">
+                            </canvas>
+                            </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    <div class="col-md-12">
+        <div class="panel panel-danger">
+            <div class="panel-heading">Błędy pomiarów</div>
+            <div class="panel-body">
+                <div class="col-md-9">
+                    <canvas id="line" class="chart chart-line" chart-data="data"
+                            chart-labels="labels" chart-series="series" chart-options="options"
+                            chart-dataset-override="datasetOverride" chart-click="onClick">
+                    </canvas>
+                </div>
+
+
+                <div class="col-md-3">
+                    <span>
+                        <img src="/image/pyt.png" id="pyt" tooltips tooltip-template="{{tooltipN}}"
+                             tooltip-side="right"/>
+                    </span>
+
+                    N: <input type="number" step="any" class="form-control"
+                              ng-model="n" ng-change="pokazWykresy()"/>
+                    <br/>
+                    <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipDt}}" tooltip-side="right"/>
+                    </span>
+                    {{labelDt}}<input type="number" step="any" class="form-control"
+                                      ng-model="dt" ng-change="pokazWykresy()"/>
+                    <br/>
+                    <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipR}}" tooltip-side="right"/>
+                    </span>
+                    {{labelR}}
+                    <rzslider rz-slider-model="sliderR"
+                              rz-slider-options="{onChange:sliderChange, id: 1}"></rzslider>
+                    <br/>
+                    <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipL}}" tooltip-side="right"/>
+                    </span>
+                    {{labelL}}
+                    <rzslider rz-slider-model="sliderL" ng-show="!sliderL.isHidden"
+                              rz-slider-options="{onChange:sliderChange, id: 2, floor: 0.000, ceil: 1.000, step: 0.001, precision: 4}"></rzslider>
+                    <br/>
+                    <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipL}}" tooltip-side="right"/>
+                    </span>
+                    {{labelC}}
+                    <rzslider rz-slider-model="sliderC" ng-show="!sliderC.isHidden"
+                              rz-slider-options="{onChange:sliderChange, id: 2, floor: 0.0000, ceil: 0.0010, step: 0.00001, precision: 6}"></rzslider>
+
+                    <br/>
+                    <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipUz}}" tooltip-side="right"/>
+                    </span>
+                    {{labelUz}}
+                    <rzslider rz-slider-model="sliderUz"
+                              rz-slider-options="{onChange:sliderChange, id: 3}"></rzslider>
+                    <br/>
+                    <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipTau}}" tooltip-side="right"/>
+                    </span>
+                    {{labelTau}} {{ tau }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="col-md-12">-->
+        <!--<div class="panel panel-danger">-->
+            <!--<div class="panel-heading">Wartości prądu w poszczególnych chwilach czasowych</div>-->
+            <!--<div class="panel-body">-->
+        <!--<table class="table table-striped">-->
+            <!--<tbody>-->
+                <!--<thead>-->
+            <!--<tr>-->
+                <!--<th>Czas</th>-->
+                <!--<th>Metoda Eulera</th>-->
+                <!--<th>Metoda analityczna</th>-->
+                <!--<th>Metoda Runge'go-Kuty</th>-->
+            <!--</tr>-->
+        <!--</thead>-->
+            <!--<tr ng-repeat="x in tablicaMetod">-->
+                <!--<td>{{ x.first }}</td>-->
+                <!--<td>{{ x.second }}</td>-->
+                <!--<td>{{ x.third }}</td>-->
+                <!--<td>{{ x.fourth }}</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+            <!--</div></div>-->
+    <!--</div>-->
+</div>
+    </div>
+<div id="menu11" class="tab-pane fade" ng-controller="MainController2">
+    <h3>Menu 1</h3>
+    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    {{byleco}}
+</div>
+
+    <div id="menu22" class="tab-pane fade">
+        <h3>Menu 1</h3>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+
+    <div id="menu33" class="tab-pane fade">
+        <h3>Menu 1</h3>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     </div>
 </div>
 <div class="col-md-1"></div>
