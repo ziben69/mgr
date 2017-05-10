@@ -1,10 +1,10 @@
-angular.module('mgrApp').controller('MainController', function ($scope, $rootScope) {
+angular.module('mgrApp').controller('MainController3', function ($scope, $rootScope) {
     $scope.tooltipKirch = 'W obwodzie zamkniętym suma spadków napięć na wszystkich odbiornikach prądu musi być równa sumie napięć na źródłach napięcia.';
     $scope.tooltipN = 'N - ilość pomiarów';
     $scope.tooltipR = 'R - rezystancja';
     $scope.tooltipL = 'L - indukcyjność';
     $scope.tooltipDt = 'dt - krok całkowania, częstość pomiarów';
-    $scope.tooltipUz = 'Uz - napięcie ustalone';
+    $scope.tooltipUm = 'Um - napięcie ustalone';
     $scope.tooltipTau = 'Tau - stała czasowa';
 
     $scope.dt = 0;
@@ -19,14 +19,11 @@ angular.module('mgrApp').controller('MainController', function ($scope, $rootSco
     $scope.sliderR = 100;
     $scope.sliderL = 1.000;
 
-    $scope.sliderUz = 230;
+    $scope.sliderUm = 230;
 
-    $scope.prad = ['stałe', 'przemienne', 'tętniące'];
-
-    $scope.wybranyPrad = $scope.prad[0];
     $scope.labelR;
     $scope.labelL;
-    $scope.labelUz;
+    $scope.labelUm;
     $scope.labelTau;
     $scope.labelDt;
     $scope.labelC;
@@ -35,7 +32,7 @@ angular.module('mgrApp').controller('MainController', function ($scope, $rootSco
     $scope.obrazek = false;
 
     $scope.sliderChange = function () { //metoda wywołuje metodę oblicz podczas przesuwania sliderami
-        $scope.obliczWyrazenie($scope.sliderR, $scope.sliderL, $scope.sliderUz, $scope.n, $scope.dt);
+        $scope.obliczWyrazenie($scope.sliderR, $scope.sliderL, $scope.sliderUm, $scope.n, $scope.dt);
     };
 
     $scope.rlEulerStaly = [];
@@ -44,11 +41,11 @@ angular.module('mgrApp').controller('MainController', function ($scope, $rootSco
 
 
     var nawiasy = [];
-    $scope.obliczWyrazenie = function (sliderR, sliderL, sliderUz, _n, _dt) { //metoda obliczająca wyrażenie ze wzoru
+    $scope.obliczWyrazenie = function (sliderR, sliderL, sliderUm, _n, _dt) { //metoda obliczająca wyrażenie ze wzoru
         nawiasy.length = 0;
         var R = sliderR;
         var L = sliderL;
-        var Uz = sliderUz;
+        var Um = sliderUm;
 
         var Tau = L / R;
         $scope.tau = Tau;
@@ -67,8 +64,13 @@ angular.module('mgrApp').controller('MainController', function ($scope, $rootSco
         var rlrk4 = [];
         var rlrk = [];
 
+        var f = 50;
+        var omega = 2 * Math.PI * f;
+        var t = 1 / f;
 
-        //
+        var uZ = [];
+        var uZwlasciwe = [];
+
         $scope.tabX = [];
 
 
@@ -82,14 +84,22 @@ angular.module('mgrApp').controller('MainController', function ($scope, $rootSco
             rlrk4[i] = 0;
             rlrk[i] = 0;
         }
+
+        temp2 = 0;
+        for (var i = 1; i <= n; i++) {
+            temp2 = temp2 + dt;
+            uZ.push($scope.sliderUm * Math.sin(omega * temp2));
+        }
+        angular.copy(uZ, uZwlasciwe);//uzWlasciwe = uZ.slice(); // Shallow copy, no reference used.
+        //console.log(uZwlasciwe); //panie na kaoncu po za forem to kpiuje caloa tablice
         //obliczamy wartosci Yow ze wzoru
         var temp = 0;
         for (var i = 0; i <= n; i++) {
 
             temp = temp + dt;
-            rlEuler[i + 1] = rlEuler[i] + dt * (-rlEuler[i] / Tau + Uz / L); //Metoda przybliżona (Eulera)
-            rlAnal[i + 1] = ($scope.sliderUz / $scope.sliderR) * (1 - Math.pow(Math.E, -(temp / Tau))); //Metoda dokładna (analityczna)
-            nawiasy.push((-rlEuler[i] / Tau + Uz / L));
+            rlEuler[i + 1] = rlEuler[i] + dt * (-rlEuler[i] / Tau + uZwlasciwe[i] / L); //Metoda przybliżona (Eulera)
+            rlAnal[i + 1] = (uZwlasciwe[i] / $scope.sliderR) * (1 - Math.pow(Math.E, -(temp / Tau))); //Metoda dokładna (analityczna)
+            nawiasy.push((-rlEuler[i] / Tau + uZwlasciwe[i] / L));
 
             //Metoda Rungego - Kuty
             rlrk1[i + 1] = dt * nawiasy[i];
@@ -98,18 +108,20 @@ angular.module('mgrApp').controller('MainController', function ($scope, $rootSco
             rlrk4[i + 1] = dt * (nawiasy[i] + rlrk3[i]);
             rlrk[i + 1] = rlrk[i] + ((rlrk1[i] + 2 * rlrk2[i] + 2 * rlrk3[i] + rlrk4[i]) / 6);
         }
-
+        //console.log(nawiasy);
         $scope.rlEulerStaly = [];
         $scope.rlAnalStaly = [];
         $scope.rlRKstaly = [];
         $scope.rlRKbez0 = [];
 
         var temp = 0;
+
         var z = {
             id:"liczba",
             wartosc:0.000
         };
         $scope.tabX.push(z);
+
         for (var i = 0; i <= n; i++) {
             var zm = { //tworzymy obiekt z kluczem liczba i wartoscia rlEuler, aby ng-repeater nie mial problemu z powtarzajacymi sie wartosciami w wi
                 id: "liczba",
@@ -151,31 +163,44 @@ angular.module('mgrApp').controller('MainController', function ($scope, $rootSco
         $scope.wsk2 = [];
         var uR = [];
         var uL = [];
-        var uZ = [];
+
+        var uZzera = [];
+
 
         for (var i = 0; i < n; i++) {
             $scope.daneDoWykresuX.push($scope.tabNewX[i].wartosc); //robimy sama tablice x z wartosciami, bez klucza do rysowania wykresu
             $scope.rlEulStaly.push($scope.rlEulerStaly[i].wartosc); //robimy sama tablice y z wartosciami, bez klucza do rysowania wykresu
             $scope.rlAnStaly.push($scope.rlAnalStaly[i].wartosc); //robimy sama tablice y z wartosciami, bez klucza do rysowania wykresu
             $scope.blad1.push($scope.rlAnalStaly[i].wartosc - $scope.rlEulerStaly[i].wartosc);
-
             uR.push($scope.rlEulerStaly[i].wartosc * $scope.sliderR);
-            uZ.push($scope.sliderUz);
-            //console.log($scope.blad1[i]);
+
         }
+
         for (var i = 1; i <= n; i++) {
+
+            // console.log(i);
+            // console.log(uZ[i]);
+
+            if (uZ[i] < 0) {
+                uZ[i] = 0;
+                uZzera.push(uZ[i]);
+                // console.log(uZ[i]);
+            } else {
+                uZzera.push(uZ[i]);
+                //console.log(uZ[i]);
+            }
+
             $scope.rlRKsta.push($scope.rlRKstaly[i].wartosc); //robimy sama tablice y z wartosciami, osobno, ponieważ brakowało ostatniego elementu
             $scope.blad2.push($scope.rlAnalStaly[i - 1].wartosc - $scope.rlRKstaly[i].wartosc);
         }
 
-        //$scope.rlRKbez0 = $scope.rlRKsta.shift();//usuwamy pierwszy element tablicy (0)
 
         for (var i = 0; i < nawiasy.length; i++) {
             uL.push(nawiasy[i] * $scope.sliderL);
         }
         //RYSOWANIE WYKRESÓW
         $scope.rysujWykresBledyRL($scope.daneDoWykresuX, $scope.blad1, $scope.blad2); //wywolujemy metode rysujaca wykres
-        $scope.rysujWykresKirchoff($scope.daneDoWykresuX, uR, uL, uZ); //wywolujemy metode rysujaca wykres
+        $scope.rysujWykresKirchoff($scope.daneDoWykresuX, uR, uL, uZwlasciwe, uZ); //wywolujemy metode rysujaca wykres
         $scope.rysujWykresRL($scope.daneDoWykresuX, $scope.rlRKsta, $scope.rlEulStaly, $scope.rlAnStaly); //wywolujemy metode rysujaca wykres
     }
 
@@ -206,16 +231,17 @@ angular.module('mgrApp').controller('MainController', function ($scope, $rootSco
             }
         };
     }
-    $scope.rysujWykresKirchoff = function (daneX, daneY, daneZ, daneV) { //metoda rysująca wykres
+    $scope.rysujWykresKirchoff = function (daneX, daneY, daneZ, daneV, daneC) { //metoda rysująca wykres
         $scope.labels2 = daneX;
-        $scope.series2 = ['Ur', 'Ul', 'Uz'];
+        $scope.series2 = ['Ur', 'Ul', 'Uz', 'Uz2'];
 
         $scope.data2 = [
             daneY,
             daneZ,
-            daneV
+            daneV,
+            daneC
         ];
-        $scope.datasetOverride2 = [{fill: false}, {fill: false}, {fill: false}];
+        $scope.datasetOverride2 = [{fill: false}, {fill: false}, {fill: false}, {fill: false}];
         $scope.options2 = {
             scales: {
                 yAxes: [
@@ -263,8 +289,8 @@ angular.module('mgrApp').controller('MainController', function ($scope, $rootSco
         };
     }
     $scope.pokazWykresy = function () {
-       // console.log('napis');
-        $scope.obliczWyrazenie($scope.sliderR, $scope.sliderL, $scope.sliderUz, $scope.n, $scope.dt);
+        console.log('napis');
+        $scope.obliczWyrazenie($scope.sliderR, $scope.sliderL, $scope.sliderUm, $scope.n, $scope.dt);
     }
 
     $scope.wybierzFunkcje = function () {
@@ -274,11 +300,11 @@ angular.module('mgrApp').controller('MainController', function ($scope, $rootSco
         $scope.labelL = 'L [Henr]:';
         $scope.labelDt = 'dt: ';
         $scope.labelTau = 'Tau:';
-        $scope.labelUz = 'Uz [V]:';
+        $scope.labelUm = 'Um [V]:';
         $scope.dt = 0.002;
         $scope.n = 20;
 
-        $scope.obliczWyrazenie($scope.sliderR, $scope.sliderL, $scope.sliderUz, $scope.n, $scope.dt);
+        $scope.obliczWyrazenie($scope.sliderR, $scope.sliderL, $scope.sliderUm, $scope.n, $scope.dt);
 
     }
     $scope.wybierzFunkcje();

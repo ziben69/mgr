@@ -6,3 +6,15 @@
     width:400px;
     font-size:10pt;
 }
+
+body{
+    font-family: 'Lato', sans-serif;
+}
+.navbar-header {
+    float: left;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+    font-family: 'Lato', sans-serif;  margin-bottom:-15px;
+}
+.navbar-brand {float:none; font-family: 'Lato', sans-serif; }

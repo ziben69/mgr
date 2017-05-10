@@ -1,170 +1,364 @@
 <div class="col-md-1"></div>
 
-<ul class="nav nav-pills">
+<ul class="nav nav-pills" style="background-color:#f3f3f3">
 
     <li><a data-toggle="pill" href="#home1">RL - prąd stały</a></li>
-    <li><a data-toggle="pill" href="#menu11">RL - prąd przemienny</a></li>
+    <li><a data-toggle="pill" href="#menu11">RC - prąd stały</a></li>
 
-    <li><a data-toggle="pill" href="#menu22">RC - prąd stały</a></li>
+    <li><a data-toggle="pill" href="#menu22">RL - prąd przemienny</a></li>
     <li><a data-toggle="pill" href="#menu33">RC - prąd przemienny</a></li>
 </ul>
-<br />
+<br/>
 <div class="tab-content">
     <div id="home1" class="tab-pane fade in active" ng-controller="MainController">
 
 
-<div class="col-md-12">
 
-        <div class="col-md-6">
-
-            <div class="panel panel-danger">
-                <div class="panel-heading">Układ elektroniczny</div>
-                <div class="panel-body">
-
-                    <div class="col-md-12">
-                        <center>
-                            <br />
-                            <div ng-if="obrazek"><img src="image/rl.png" width="430px" height="250px"/>
-                        </center>
-                    </div>
-                    <br/></div>
-            </div>
+        <div class="col-md-12">
+            <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#rlPrzebieg">Podstawa teoretyczna</button>
+        <br /><br />
         </div>
-        <div class="col-md-6">
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                Symulacja</div>
-                <div class="panel-body">
-                    <ul class="nav nav-pills">
-                        <li ><a data-toggle="pill" href="#home">II PRAWO KIRCHHOFFA</a></li>
-                        <li><a data-toggle="pill" href="#menu1">PRZEBIEG PRĄDU</a></li>
-                        <!--<img src="/image/pyt.png" id="pyt" tooltips tooltip-template="{{tooltipKirch}}"-->
-                        <!--tooltip-side="top" tooltip-class="tooltip"/>-->
-                    </ul>
 
-                    <div class="tab-content">
-                        <div id="home" class="tab-pane fade in active">
-                            <br />
-                            <canvas id="line" class="chart chart-line" chart-data="data2" chart-labels="labels2" chart-series="series2" chart-options="options2"
-                                    chart-dataset-override="datasetOverride2" chart-click="onClick">
-                            </canvas></div>
-                        <div id="menu1" class="tab-pane fade">
-                            <br />
-                            <canvas id="line" class="chart chart-line" chart-data="data3" chart-labels="labels3" chart-series="series3" chart-options="options3"
-                                    chart-dataset-override="datasetOverride3" chart-click="onClick">
+            <div class="col-md-6">
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">II Prawo Kirchhoffa</div>
+                    <div class="panel-body">
+
+
+                        <br/>
+                        <canvas id="line" class="chart chart-line" chart-data="data2" chart-labels="labels2"
+                                chart-series="series2" chart-options="options2"
+                                chart-dataset-override="datasetOverride2" chart-click="onClick">
+                        </canvas>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-info">
+
+                    <div class="panel-heading">Przebieg prądu - stany nieustalone</div>
+                    <div class="panel-body">
+                        <br/>
+                        <canvas id="line" class="chart chart-line" chart-data="data3" chart-labels="labels3"
+                                chart-series="series3" chart-options="options3"
+                                chart-dataset-override="datasetOverride3" chart-click="onClick">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Błędy pomiarów</div>
+                    <div class="panel-body">
+                        <div class="col-md-9">
+                            <canvas id="line" class="chart chart-line" chart-data="data"
+                                    chart-labels="labels" chart-series="series" chart-options="options"
+                                    chart-dataset-override="datasetOverride" chart-click="onClick">
                             </canvas>
-                            </div>
-                    </div>
+                        </div>
 
 
-                </div>
-            </div>
-        </div>
-
-    <div class="col-md-12">
-        <div class="panel panel-danger">
-            <div class="panel-heading">Błędy pomiarów</div>
-            <div class="panel-body">
-                <div class="col-md-9">
-                    <canvas id="line" class="chart chart-line" chart-data="data"
-                            chart-labels="labels" chart-series="series" chart-options="options"
-                            chart-dataset-override="datasetOverride" chart-click="onClick">
-                    </canvas>
-                </div>
-
-
-                <div class="col-md-3">
+                        <div class="col-md-3">
                     <span>
-                        <img src="/image/pyt.png" id="pyt" tooltips tooltip-template="{{tooltipN}}"
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipN}}"
                              tooltip-side="right"/>
                     </span>
 
-                    N: <input type="number" step="any" class="form-control"
-                              ng-model="n" ng-change="pokazWykresy()"/>
-                    <br/>
-                    <span>
+                            N: <input type="number" step="any" class="form-control"
+                                      ng-model="n" ng-change="pokazWykresy()"/>
+                            <br/>
+                            <span>
                         <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipDt}}" tooltip-side="right"/>
                     </span>
-                    {{labelDt}}<input type="number" step="any" class="form-control"
-                                      ng-model="dt" ng-change="pokazWykresy()"/>
-                    <br/>
-                    <span>
-                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipR}}" tooltip-side="right"/>
-                    </span>
-                    {{labelR}}
-                    <rzslider rz-slider-model="sliderR"
-                              rz-slider-options="{onChange:sliderChange, id: 1}"></rzslider>
-                    <br/>
-                    <span>
-                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipL}}" tooltip-side="right"/>
-                    </span>
-                    {{labelL}}
-                    <rzslider rz-slider-model="sliderL" ng-show="!sliderL.isHidden"
-                              rz-slider-options="{onChange:sliderChange, id: 2, floor: 0.000, ceil: 1.000, step: 0.001, precision: 4}"></rzslider>
-                    <br/>
-                    <span>
-                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipL}}" tooltip-side="right"/>
-                    </span>
-                    {{labelC}}
-                    <rzslider rz-slider-model="sliderC" ng-show="!sliderC.isHidden"
-                              rz-slider-options="{onChange:sliderChange, id: 2, floor: 0.0000, ceil: 0.0010, step: 0.00001, precision: 6}"></rzslider>
-
-                    <br/>
-                    <span>
-                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipUz}}" tooltip-side="right"/>
-                    </span>
-                    {{labelUz}}
-                    <rzslider rz-slider-model="sliderUz"
-                              rz-slider-options="{onChange:sliderChange, id: 3}"></rzslider>
-                    <br/>
-                    <span>
+                            {{labelDt}} <input type="number" step="any" class="form-control"
+                                               ng-model="dt" ng-change="pokazWykresy()"/>
+                            <br/>
+                            <span>
                         <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipTau}}" tooltip-side="right"/>
                     </span>
-                    {{labelTau}} {{ tau }}
+                            <b>{{labelTau}} {{ tau }}</b>
+                            <hr style="border-top: 3px solid #f3f3f3;"/>
+                            <br/>
+                            <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipR}}" tooltip-side="right"/>
+                    </span>
+                            {{labelR}}
+                            <rzslider rz-slider-model="sliderR"
+                                      rz-slider-options="{onChange:sliderChange, id: 1}"></rzslider>
+                            <br/>
+                            <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipL}}" tooltip-side="right"/>
+                    </span>
+                            {{labelL}}
+                            <rzslider rz-slider-model="sliderL" ng-show="!sliderL.isHidden"
+                                      rz-slider-options="{onChange:sliderChange, id: 2, floor: 0.000, ceil: 1.000, step: 0.001, precision: 4}"></rzslider>
+                            <br/>
+                            <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipUz}}" tooltip-side="right"/>
+                    </span>
+                            {{labelUz}}
+                            <rzslider rz-slider-model="sliderUz"
+                                      rz-slider-options="{onChange:sliderChange, id: 3}"></rzslider>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--<div class="col-md-12">-->
-        <!--<div class="panel panel-danger">-->
-            <!--<div class="panel-heading">Wartości prądu w poszczególnych chwilach czasowych</div>-->
-            <!--<div class="panel-body">-->
-        <!--<table class="table table-striped">-->
-            <!--<tbody>-->
-                <!--<thead>-->
-            <!--<tr>-->
-                <!--<th>Czas</th>-->
-                <!--<th>Metoda Eulera</th>-->
-                <!--<th>Metoda analityczna</th>-->
-                <!--<th>Metoda Runge'go-Kuty</th>-->
-            <!--</tr>-->
-        <!--</thead>-->
-            <!--<tr ng-repeat="x in tablicaMetod">-->
-                <!--<td>{{ x.first }}</td>-->
-                <!--<td>{{ x.second }}</td>-->
-                <!--<td>{{ x.third }}</td>-->
-                <!--<td>{{ x.fourth }}</td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-        <!--</table>-->
-            <!--</div></div>-->
-    <!--</div>-->
-</div>
-    </div>
-<div id="menu11" class="tab-pane fade" ng-controller="MainController2">
-    <h3>Menu 1</h3>
-    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    {{byleco}}
-</div>
 
-    <div id="menu22" class="tab-pane fade">
-        <h3>Menu 1</h3>
-        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+
+    <!--  ///////////////////          RC STAłY           ///////////////////  -->
+    <div id="menu11" class="tab-pane fade" ng-controller="MainController2">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#rlPrzebieg">Podstawa teoretyczna</button>
+            <br /><br />
+        </div>
+
+            <div class="col-md-6">
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">II Prawo Kirchhoffa
+
+                    </div>
+                    <div class="panel-body">
+
+
+                        <br/>
+                        <canvas id="line" class="chart chart-line" chart-data="data5" chart-labels="labels5"
+                                chart-series="series5" chart-options="options5"
+                                chart-dataset-override="datasetOverride5" chart-click="onClick">
+                        </canvas>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-info">
+
+                    <div class="panel-heading">Przebieg prądu - stany nieustalone</div>
+                    <div class="panel-body">
+
+
+                        <br/>
+                        <canvas id="line" class="chart chart-line" chart-data="data6" chart-labels="labels6"
+                                chart-series="series6" chart-options="options6"
+                                chart-dataset-override="datasetOverride6" chart-click="onClick">
+                        </canvas>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Błędy pomiarów</div>
+                    <div class="panel-body">
+                        <div class="col-md-9">
+                            <canvas id="line" class="chart chart-line" chart-data="data4"
+                                    chart-labels="labels4" chart-series="series4" chart-options="options4"
+                                    chart-dataset-override="datasetOverride4" chart-click="onClick">
+                            </canvas>
+                        </div>
+
+
+                        <div class="col-md-3">
+                    <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipN2}}"
+                             tooltip-side="right"/>
+                    </span>
+
+                            N: <input type="number" step="any" class="form-control"
+                                      ng-model="n" ng-change="pokazWykresy()"/>
+                            <br/>
+                            <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipDt2}}" tooltip-side="right"/>
+                    </span>
+                            {{labelDt}}<input type="number" step="any" class="form-control"
+                                              ng-model="dt" ng-change="pokazWykresy()"/>
+                            <br/>
+                            <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipTau}}" tooltip-side="right"/>
+                    </span>
+                            <b>{{labelTau}} {{ tau }}</b>
+                            <hr style="border-top: 3px solid #f3f3f3;"/>
+                            <br/>
+                            <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipR2}}" tooltip-side="right"/>
+                    </span>
+                            {{labelR}}
+                            <rzslider rz-slider-model="sliderR"
+                                      rz-slider-options="{onChange:sliderChange, id: 1}"></rzslider>
+                            <br/>
+                            <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipC2}}" tooltip-side="right"/>
+                    </span>
+                            {{labelC}}
+                            <rzslider rz-slider-model="sliderC"
+                                      rz-slider-options="{onChange:sliderChange, id: 2, floor: 0.0000, ceil: 0.0010, step: 0.00001, precision: 6}"></rzslider>
+
+                            <br/>
+                            <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipUz2}}" tooltip-side="right"/>
+                    </span>
+                            {{labelUz}}
+                            <rzslider rz-slider-model="sliderUz"
+                                      rz-slider-options="{onChange:sliderChange, id: 3}"></rzslider>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- ///////////////////////////////////////////RL - zmienny//////////////////////////////////////-->
+    <div id="menu22" class="tab-pane fade"  ng-controller="MainController3">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#rlPrzebieg">Podstawa teoretyczna</button>
+            <br /><br />
+        </div>
+
+            <div class="col-md-6">
+
+                <div class="panel panel-info">
+
+                    <div class="panel-heading">
+                        II Prawo Kirchhoffa
+                    </div>
+                    <div class="panel-body">
+
+
+                        <br/>
+                        <canvas id="line" class="chart chart-line" chart-data="data2" chart-labels="labels2"
+                                chart-series="series2" chart-options="options2"
+                                chart-dataset-override="datasetOverride2" chart-click="onClick">
+                        </canvas>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Przebieg prądu - stany nieustalone</div>
+                    <div class="panel-body">
+
+
+                        <br/>
+                        <canvas id="line" class="chart chart-line" chart-data="data3" chart-labels="labels3"
+                                chart-series="series3" chart-options="options3"
+                                chart-dataset-override="datasetOverride3" chart-click="onClick">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+
+
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">Błędy pomiarów</div>
+                <div class="panel-body">
+                    <div class="col-md-9">
+                        <canvas id="line" class="chart chart-line" chart-data="data"
+                                chart-labels="labels" chart-series="series" chart-options="options"
+                                chart-dataset-override="datasetOverride" chart-click="onClick">
+                        </canvas>
+                    </div>
+
+
+                    <div class="col-md-3">
+                    <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipN}}"
+                             tooltip-side="right"/>
+                    </span>
+
+                        N: <input type="number" step="any" class="form-control"
+                                  ng-model="n" ng-change="pokazWykresy()"/>
+                        <br/>
+                        <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipDt}}" tooltip-side="right"/>
+                    </span>
+                        {{labelDt}} <input type="number" step="any" class="form-control"
+                                           ng-model="dt" ng-change="pokazWykresy()"/>
+                        <br/>
+                        <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipTau}}" tooltip-side="right"/>
+                    </span>
+                        <b>{{labelTau}} {{ tau }}</b>
+                        <hr style="border-top: 3px solid #f3f3f3;"/>
+                        <br/>
+                        <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipR}}" tooltip-side="right"/>
+                    </span>
+                        {{labelR}}
+                        <rzslider rz-slider-model="sliderR"
+                                  rz-slider-options="{onChange:sliderChange, id: 1}"></rzslider>
+                        <br/>
+                        <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipL}}" tooltip-side="right"/>
+                    </span>
+                        {{labelL}}
+                        <rzslider rz-slider-model="sliderL"
+                                  rz-slider-options="{onChange:sliderChange, id: 2, floor: 0.000, ceil: 1.000, step: 0.001, precision: 4}"></rzslider>
+                        <br/>
+                        <span>
+                        <img src="/image/pyt.png" tooltips tooltip-template="{{tooltipUz}}" tooltip-side="right"/>
+                    </span>
+                        {{labelUm}}
+                        <rzslider rz-slider-model="sliderUm"
+                                  rz-slider-options="{onChange:sliderChange, id: 3}"></rzslider>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="menu33" class="tab-pane fade">
         <h3>Menu 1</h3>
-        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat.</p>
+    </div>
+</div>
+<div id="rlPrzebieg" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Przebieg prądu dla obwodu RL - teoria</h4>
+            </div>
+            <div class="modal-body">
+                <p><b>Obwód elektroniczny RL - napięcie stałe</b></p>
+
+                <center><img src="/image/rl.png" style="width:275px; height:150px; margin-left:-35px"/></center><br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <p> <b>II Prawo Kirchhoffa</b><br />
+                            W obwodzie zamkniętym suma spadków napięć na wszystkich odbiornikach prądu musi być równa sumie napięć na źródłach napięcia:
+                        </p>
+                        <center><img src="/image/kirchhoff.png"/></center>
+                    </div>
+                    <div class="col-md-6">
+                        <p> <b>Stany nieustalone</b><br />
+                            Obliczenie stanów nieustalonych w gałęzi szeregowej RL przy wymuszeniu stałym na podstawie poniższych wzorów:
+                        </p>
+                        <center><img src="/image/rlStaly.png"/></center>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+
     </div>
 </div>
 <div class="col-md-1"></div>

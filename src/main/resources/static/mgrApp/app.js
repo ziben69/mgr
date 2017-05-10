@@ -19,14 +19,6 @@ phonesApp.config(function ($routeProvider) {
             templateUrl: 'views/main/main.html',
             controller: 'MainController'
         })
-        // .when('/', {
-        //     templateUrl: 'views/main/main.html',
-        //     controller: 'MainController2'
-        // })
-        // .when('/main/detail/:id', {
-        //     templateUrl: 'views/main/detail.html',
-        //     controller: 'DetailPhoneController'
-        // })
         .when('/about', {
             templateUrl: 'views/main/about.html',
             controller: 'AboutController'
